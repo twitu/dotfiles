@@ -108,7 +108,7 @@ export PATH="$(stack path --compiler-bin):$PATH"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND="fd --type file"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND="fd -t d"
+export FZF_ALT_C_COMMAND="fd -t d . $HOME"
 
 # add path for nvm
 export NVM_DIR="$HOME/.nvm"
@@ -121,9 +121,6 @@ export PROJECT_HOME=$HOME/Code
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
 export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
 source /usr/local/bin/virtualenvwrapper_lazy.sh
-
-# add ruby to path
-export PATH="/usr/bin/ruby:$PATH"
 
 # add navi widget
 source <(navi widget zsh)
