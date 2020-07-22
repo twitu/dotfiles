@@ -68,7 +68,7 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git vi-mode)
+plugins=(git vi-mode aws)
 
 source $ZSH/oh-my-zsh.sh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -82,9 +82,9 @@ source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
+  export EDITOR='nvim'
 else
-  export EDITOR='vim'
+  export EDITOR='nvim'
 fi
 
 # Compilation flags
@@ -108,7 +108,7 @@ export PATH="$(stack path --compiler-bin):$PATH"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND="fd --type file"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND="fd -t d . $HOME"
+export FZF_ALT_C_COMMAND="fd -t d --max-depth 3 . $HOME"
 
 # add path for nvm
 export NVM_DIR="$HOME/.nvm"
@@ -124,4 +124,12 @@ source /usr/local/bin/virtualenvwrapper_lazy.sh
 
 # add navi widget
 source <(navi widget zsh)
+
+# copy to system clipboard
+alias xclip="xclip -selection c"
+
+# enable tab completion for aws
+source $HOME/.oh-my-zsh/custom/plugins/fzf-tab-completion/zsh/fzf-zsh-completion.sh
+zstyle ':completion:*:*:aws' fzf-search-display true  # aws commands
+# zstyle ':completion:*' fzf-search-display true  # everything
 
