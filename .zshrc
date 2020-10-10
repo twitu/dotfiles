@@ -99,6 +99,7 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias reloadzsh="source ~/.zshrc"
+alias configzsh="nvim ~/.zshrc"
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 # add ghc to path
@@ -113,7 +114,6 @@ export FZF_ALT_C_COMMAND="fd -t d --max-depth 3 . $HOME"
 # add path for nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # add virtualenvwrapper
 export WORKON_HOME=$HOME/.virtualenvs
