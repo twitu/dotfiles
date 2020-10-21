@@ -1,0 +1,25 @@
+{
+  "languageserver": {
+    "haskell": {
+      "command": "hls-wrapper",
+      "args": ["+RTS", "-c", "-M1500M", "-K1G", "-A16M", "-RTS", "--lsp"],
+      "rootPatterns": [
+        "*.cabal",
+        "stack.yaml",
+        "cabal.config",
+        "package.yaml"
+      ],
+      "filetypes": [
+        "hs",
+        "lhs",
+        "haskell"
+      ],
+      "initializationOptions": {
+        "languageServerHaskell": {
+          "hlintOn": true
+        }
+      }
+    }
+  }
+}
+
