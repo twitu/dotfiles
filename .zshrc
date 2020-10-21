@@ -68,10 +68,9 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git vi-mode aws)
+plugins=(git vi-mode aws fzf-tab zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # User configuration
 
@@ -107,9 +106,30 @@ export PATH="$(stack path --compiler-bin):$PATH"
 
 # add fzf fuzzy completion
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
 export FZF_DEFAULT_COMMAND="fd --type file"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="fd -t d --max-depth 3 . $HOME"
+
+FZF_TAB_COMMAND=(
+    fzf
+    --ansi   # Enable ANSI color support, necessary for showing groups
+    --expect='$continuous_trigger,$print_query' # For continuous completion and print query
+    '--color=hl:$(( $#headers == 0 ? 108 : 255 ))'
+    --nth=2,3 --delimiter='\x00'  # Don't search prefix
+    --layout=reverse --height='${FZF_TMUX_HEIGHT:=75%}'
+    --tiebreak=begin -m --bind=tab:down,btab:up,change:top,ctrl-space:toggle --cycle
+    '--query=$query'   # $query will be expanded to query string at runtime.
+    '--header-lines=$#headers' # $#headers will be expanded to lines of headers at runtime
+    --print-query
+)
+
+# use fzf for zsh completion
+zstyle ':fzf-tab:*' command $FZF_TAB_COMMAND
+# disable sort when completing options of any command
+zstyle ':completion:complete:*:options' sort false
+# give a preview of directory by exa when completing cd
+zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=always $realpath'
 
 # add path for nvm
 export NVM_DIR="$HOME/.nvm"
@@ -128,8 +148,4 @@ source <(navi widget zsh)
 # copy to system clipboard
 alias xclip="xclip -selection c"
 
-# enable tab completion for aws
-source $HOME/.oh-my-zsh/custom/plugins/fzf-tab-completion/zsh/fzf-zsh-completion.sh
-zstyle ':completion:*:*:aws' fzf-search-display true  # aws commands
-# zstyle ':completion:*' fzf-search-display true  # everything
 
