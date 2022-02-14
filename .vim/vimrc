@@ -1,0 +1,185 @@
+" install vim-plug if not found
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
+
+" declare plugins
+call plug#begin('~/.vim/plugged')
+
+Plug 'gruvbox-community/gruvbox' "vim theme
+Plug 'sbdchd/neoformat' "auto format code
+Plug 'neovimhaskell/haskell-vim' "Haskell syntax highlighting
+Plug 'vim-airline/vim-airline' "better status line
+Plug 'vim-airline/vim-airline-themes' "status line theme
+Plug 'godlygeek/tabular' "dependency for vim markdown
+Plug 'plasticboy/vim-markdown'  "markdown highlighting and mapping
+Plug 'jiangmiao/auto-pairs' "auto pair brackets
+Plug 'tpope/vim-surround' "easy bracket surround
+Plug 'christoomey/vim-tmux-navigator' "efficient tmux navigation
+Plug 'airblade/vim-gitgutter' "git change highlight
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } "install fzf plugin and binary
+Plug 'junegunn/fzf.vim' "add fzf commands
+Plug 'neoclide/coc.nvim', {'branch': 'release'} "language server for IDE features
+
+" initialize plugin system
+call plug#end()
+
+" set colorscheme
+let g:airline_theme='gruvbox'
+let g:gruvbox_contrast_light='hard'
+colorscheme gruvbox
+set background=light
+
+" enable syntax highlighting
+syntax enable
+
+" show relative line numbers
+set relativenumber
+
+" set tabs to have 4 spaces
+set tabstop=4
+
+" indent when moving to the next line while writing code
+set autoindent
+
+" expand tabs into spaces
+set expandtab
+
+" when using the >> or << commands, shift lines by 4 spaces
+set shiftwidth=4
+
+" show partial command line at last line
+set showcmd
+
+" highlight line cursor is on
+set cursorline
+
+" shows matching parenthesis
+set showmatch
+
+" show the title of the file you are editing.
+set title
+
+" enable all Python syntax highlighting features
+let python_highlight_all = 1
+
+" shows trailing whitespace in red color
+highlight RedundantSpaces ctermbg=red guibg=red
+match RedundantSpaces /\s\+$/
+
+" seamless navigation between splits
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-H> <C-W><C-H>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+
+" Use alt + hjkl to resize windows
+nnoremap <M-j>    :resize -2<CR>
+nnoremap <M-k>    :resize +2<CR>
+nnoremap <M-h>    :vertical resize -2<CR>
+nnoremap <M-l>    :vertical resize +2<CR>0
+
+" use ctags for understanding source code
+set tags=tags
+
+" visual select and replace
+vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
+
+" start searching on character press
+set incsearch
+
+" Default splits below and right
+set splitbelow
+set splitright
+
+" Swap comma separated item with the one on the right
+nnoremap <silent> gl "_yiw:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR><c-o>/\w\+\_W\+<CR><c-l>"
+
+" Swap comma separated item with the one on the left
+nnoremap <silent> gh "_yiw?\w\+\_W\+\%#<CR>:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR><c-o><c-l>"
+
+" Move through virtual lines
+nnoremap <expr> k v:count == 0 ? 'gk' : 'k'
+nnoremap <expr> j v:count == 0 ? 'gj' : 'j'
+
+" This setting makes search case-insensitive when all characters in the string
+" being searched are lowercase. However, the search becomes case-sensitive if
+" it contains any capital letters. This makes searching more convenient.
+set ignorecase
+set smartcase
+
+" Unbind some useless/annoying default key bindings.
+" 'Q' in normal mode enters Ex mode. You almost never want this.
+nmap Q <Nop>
+
+" Enable persistent undo
+if has('persistent_undo')      "check if your vim version supports it
+  silent !mkdir -p ~/.vim/undo
+  set undofile                 "turn on the feature
+  set undodir=$HOME/.vim/undo  "directory where the undo files will be stored
+endif
+
+set lazyredraw
+
+" Going to the end and the beginning of a line
+nnoremap B ^
+nnoremap E $
+nnoremap $ <nop>
+nnoremap ^ <nop>
+
+" Default copy to global clipboard
+set clipboard=unnamedplus
+
+" Spell check
+set spelllang=en_gb
+autocmd filetype markdown setlocal spell
+
+" set default folding
+set foldmethod=indent
+set nofoldenable
+
+" set format options to not put in comment header
+" when creating new line using 'o' or 'O'
+" Use :help fo-table to see options
+" Use autocmd because setting is overridden by plugins
+" https://vi.stackexchange.com/a/17739/30332
+au BufEnter * set fo-=o
+
+" Ctrl w behaves like Ctrl backspace in insert mode
+" Map Ctrl j for easier word delete
+" https://vi.stackexchange.com/a/7226/30332
+noremap! <C-j> <C-w>
+
+" Use tab and shift tab to cycle through suggestions
+" replacing Ctrl n and Ctrl p for the same
+inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-TAB>"
+
+" Open hotkeys for Fzf commands
+map <C-p> :Files<CR>
+nmap <C-\> :Buffers<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Haskell configuration
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" refer to: https://www.jontysr.uk/setup/2019/12/16/haskell_vim.html
+" Using haskell-vim for syntax highlighting and indentation
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
+
+" Use neoformat plugin for formatting code with format on save
+" Use brittany as formatter
+let g:neoformat_enabled_haskell = ['brittany']
+
+augroup fmt
+  autocmd!
+  autocmd BufWritePre * undojoin | Neoformat
+augroup END
+
