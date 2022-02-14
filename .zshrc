@@ -1,5 +1,5 @@
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="/home/twitu/.oh-my-zsh"
@@ -100,9 +100,9 @@ fi
 alias reloadzsh="source ~/.zshrc"
 alias configzsh="nvim ~/.zshrc"
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-
-# add ghc to path
-export PATH="$(stack path --compiler-bin):$PATH"
+# copy to system clipboard
+alias xclip="xclip -selection c"
+alias tmux="tmux -u"
 
 # add fzf fuzzy completion
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -110,6 +110,11 @@ export FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --co
 export FZF_DEFAULT_COMMAND="fd --type file"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="fd -t d --max-depth 3 . $HOME"
+
+# export other specific commands
+if [ -f ~/.terminal_profile ]; then
+    . ~/.terminal_profile;
+fi
 
 FZF_TAB_COMMAND=(
     fzf
@@ -135,17 +140,36 @@ zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=alw
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
-# add virtualenvwrapper
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/Code
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
-source /usr/local/bin/virtualenvwrapper_lazy.sh
+# add path for solana
+export PATH=$HOME/.local/share/solana/install/active_release/bin:$PATH
 
-# add navi widget
-source <(navi widget zsh)
+# add path for go
+export PATH=/usr/local/go/bin:$HOME/go/bin:$PATH
 
-# copy to system clipboard
-alias xclip="xclip -selection c"
+# add haskell paths
+export PATH=$HOME/.ghcup/bin:$HOME/.cabal/bin:$PATH
 
+# add path for scala coursier
+export PATH=$HOME/.local/share/coursier/bin:$PATH
+
+# >>> JVM installed by coursier >>>
+export JAVA_HOME="/home/twitu/.cache/coursier/jvm/adopt@1.8.0-292"
+export PATH="$PATH:/home/twitu/.cache/coursier/jvm/adopt@1.8.0-292/bin"
+# <<< JVM installed by coursier <<<
+
+# aws profile switcher
+function aws-profile() {
+  if [[ -z "${1}" ]]; then
+    profiles=$(grep '\[profile' ~/.aws/config | tr -d '[]' | awk '{print $2}')
+    for profile in $profiles; do
+      if [[ "${profile}" == "${AWS_PROFILE}" ]]; then
+        echo "${profile} *"
+      else
+        echo "${profile}"
+      fi
+    done
+  else
+    export AWS_PROFILE="${1}"
+  fi
+}
 

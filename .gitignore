@@ -1,2 +1,9 @@
-.dotfiles
+*
 
+!.config/nvim
+!.vim/
+!.fdignore
+!.gitignore
+!.gitmodules
+!.tmux.conf
+!.zshrc
