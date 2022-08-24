@@ -2,7 +2,7 @@
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/twitu/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -139,6 +139,7 @@ zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=alw
 # add path for nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # add path for solana
 export PATH=$HOME/.local/share/solana/install/active_release/bin:$PATH
@@ -153,9 +154,12 @@ export PATH=$HOME/.ghcup/bin:$HOME/.cabal/bin:$PATH
 export PATH=$HOME/.local/share/coursier/bin:$PATH
 
 # >>> JVM installed by coursier >>>
-export JAVA_HOME="/home/twitu/.cache/coursier/jvm/adopt@1.8.0-292"
-export PATH="$PATH:/home/twitu/.cache/coursier/jvm/adopt@1.8.0-292/bin"
+export JAVA_HOME="$HOME/.cache/coursier/jvm/adopt@1.8.0-292"
+export PATH="$PATH:$HOME/.cache/coursier/jvm/adopt@1.8.0-292/bin"
 # <<< JVM installed by coursier <<<
+
+# add tex installation bin
+export PATH="$PATH:/usr/local/texlive/2022basic/bin/universal-darwin"
 
 # aws profile switcher
 function aws-profile() {
