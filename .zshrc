@@ -109,7 +109,7 @@ alias tmux="tmux -u"
 export FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
 export FZF_DEFAULT_COMMAND="fd --type file"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND="fd -t d --max-depth 3 . $HOME"
+export FZF_ALT_C_COMMAND="fd -t d --max-depth 3 . $HOME "
 
 # export other specific commands
 if [ -f ~/.terminal_profile ]; then
@@ -153,6 +153,14 @@ export PATH=$HOME/.ghcup/bin:$HOME/.cabal/bin:$PATH
 # add path for scala coursier
 export PATH=$HOME/.local/share/coursier/bin:$PATH
 
+# add path for openmpi
+export PATH=$HOME/opt/usr/local/bin:$PATH
+
+export PATH=/usr/local/bin:$PATH
+
+# add path for rust
+export PATH="$HOME/.cargo/bin:$PATH"
+
 # >>> JVM installed by coursier >>>
 export JAVA_HOME="$HOME/.cache/coursier/jvm/adopt@1.8.0-292"
 export PATH="$PATH:$HOME/.cache/coursier/jvm/adopt@1.8.0-292/bin"
@@ -176,4 +184,12 @@ function aws-profile() {
     export AWS_PROFILE="${1}"
   fi
 }
+
+# opam configuration
+test -r /home/twitu/.opam/opam-init/init.zsh && . /home/twitu/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+# configure pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
 
