@@ -1,5 +1,14 @@
-Software/
+*
+.ghc/
+.cargo/
+.stack/
 Games/
+go/
+Music/
 snap/
+Software/
+Steam/
 Unity/
 
+!Documents/
+!Code/
